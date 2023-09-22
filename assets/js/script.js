@@ -70,7 +70,7 @@ class UI {
 
 // Store Class: Handles Storage
 class Store {
-  // Get Books from Storage
+  // Get Books from Storage method
   static getBook() {
     let books;
 
@@ -83,7 +83,7 @@ class Store {
     return books;
   }
 
-  // Add Book to Storage
+  // Add Book to Storage method
   static addBook(book) {
     const books = Store.getBook();
 
@@ -92,7 +92,7 @@ class Store {
     localStorage.setItem('books', JSON.stringify(books));
   }
 
-  // Remove Book from Storage
+  // Remove Book from Storage method
   static removeBook(isbn) {
     const books = Store.getBooks();
 
@@ -126,8 +126,11 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
     // Instatiate book
     const book = new Book(title, author, isbn);
 
-    // AddBook to UI
+    // Add book to UI
     UI.addBookToList(book);
+
+    // Add book to store
+    Store.addBook(book);
 
     // Show succes message
     UI.showAlert("Book Added", "success");
@@ -137,9 +140,14 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
   }
 });
 
-// Events: Remove a Book
+// Events: Remove a book
 document.querySelector("#book-list").addEventListener("click", (e) => {
+  // Remove book from UI
   UI.deleteBook(e.target);
 
+  // Remove book from store
+  Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+
+  // Show succes message
   UI.showAlert("Book Removed", "success");
 });
